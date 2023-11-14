@@ -15,8 +15,5 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 	   boolean existsByCrm(String crm);
 	   Page<Medico> findAll(Pageable pageable);
 	   Optional<Medico> findByCrm(String crm);
-	    
-//	   @Query("SELECT m FROM Medico m WHERE m.id NOT IN (SELECT c.medico.id FROM Consulta c WHERE c.dataHora = :dataHora)")
-//	   List<Medico> findMedicosDisponiveis(LocalDateTime dataHora);
-	   
+	    	   
 }

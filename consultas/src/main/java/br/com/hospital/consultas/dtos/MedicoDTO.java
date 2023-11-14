@@ -1,5 +1,8 @@
 package br.com.hospital.consultas.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicoDTO {
 	private String nome;
     private String email;
@@ -13,6 +16,8 @@ public class MedicoDTO {
 		this.crm = crm;
 		this.especialidade = especialidade;
 	}
+	
+	public MedicoDTO() {}
 	
     public String getNome() {
 		return nome;

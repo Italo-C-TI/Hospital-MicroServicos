@@ -13,9 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.Random;
 import com.google.gson.Gson;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +37,13 @@ public class ConsultaService {
     @Autowired
     private ConsultaRepository consultaRepository;
 
-
+    private static final String HOSPITAL_EMAIL = "costa.italo.ti@gmail.com"; 
     private static final String BUSCAR_PACIENTE_URL = "http://localhost:8082/pacientes/buscar/"; 
+    private static final String BUSCAR_MEDICO_URL = "http://localhost:8081/medicos/buscar/"; 
+    private static final String VERIFICA_SE_MEDICO_ATIVO = "http://localhost:8081/medicos/verifica-se-ativo/"; 
     private static final String VERIFICA_SE_PACIENTE_ATIVO = "http://localhost:8082/pacientes/verifica-se-ativo/"; 
     private static final String EMAIL_SERVICE_URL = "http://localhost:8080/sending-email"; 
     private final HttpClient httpClient = HttpClient.newHttpClient();
-
 
     public Consulta agendarConsulta(String pacienteCPF, String medicoCRM, LocalDateTime dataHora) {
         validarHorarioConsulta(dataHora);
@@ -52,11 +52,7 @@ public class ConsultaService {
         validarMedicoDisponivel(medicoCRM, dataHora);
         validarPacienteAtivo(pacienteCPF);
 
-        Consulta consulta = new Consulta();
-        consulta.setPacienteCPF(pacienteCPF);
-        consulta.setMedicoCRM(medicoCRM);
-        consulta.setDataHora(dataHora);
-        
+        Consulta consulta = new Consulta(pacienteCPF,medicoCRM ,dataHora);
         try {
             sendEmailToPaciente(pacienteCPF, consulta, medicoCRM);
             sendEmailToMedico(medicoCRM, consulta, pacienteCPF);
@@ -74,7 +70,7 @@ public class ConsultaService {
         validarConsultaDuplicada(pacienteCPF, dataHora);
         validarPacienteAtivo(pacienteCPF);
 
-        String medicoCRM = medicoService.encontrarMedicoDisponivel(dataHora);
+        String medicoCRM = encontrarMedicoDisponivel(dataHora);
 
         if (medicoCRM == null) {
             throw new IllegalArgumentException("Não há médicos disponíveis para o horário selecionado.");
@@ -126,14 +122,13 @@ public class ConsultaService {
     }
 
     private void validarConsultaDuplicada(String pacienteCPF, LocalDateTime dataHora) {
-        LocalDateTime inicioDia = dataHora.withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime fimDia = inicioDia.plusHours(24);
-
-        List<Consulta> consultas = consultaRepository.findByPacienteCPFAndDataHoraBetween(pacienteCPF, inicioDia, fimDia);
-
-        for (Consulta consulta : consultas) {
-            if (consulta.getDataHora().equals(dataHora) && consulta.getDesmarcar().getDesmarcado() == false) {
-                throw new IllegalArgumentException("Já existe uma consulta marcada para o mesmo horário.");
+        List<Consulta> consultas = consultaRepository.findByPacienteCPFAndDataHora(pacienteCPF, dataHora);
+  
+        if (consultas.size() > 1) {
+            for (Consulta consulta : consultas) {
+                if (consulta.getDataHora().equals(dataHora) && consulta.getDesmarcar().getDesmarcado() == false) {
+                    throw new IllegalArgumentException("Já existe uma consulta marcada para o mesmo horário.");
+                }
             }
         }
     }
@@ -141,7 +136,7 @@ public class ConsultaService {
     private void validarMedicoDisponivel(String medicoCRM, LocalDateTime dataHora) {
         List<Consulta> consultas = consultaRepository.findByMedicoCRMAndDataHora(medicoCRM, dataHora);
 
-        if (!consultas.isEmpty()) {
+        if (consultas.size() > 1) {
             throw new IllegalArgumentException("O médico já possui consulta agendada para o mesmo horário.");
         }
     }
@@ -155,10 +150,10 @@ public class ConsultaService {
     
     public Page<ConsultaDTO> listarConsultasDTOPorCpfPaciente(String cpf, Pageable pageable) {
     	 Page<Consulta> consultas =  consultaRepository.findByPacienteCpf(cpf, pageable);
+      	PacienteDTO pacienteDTO = buscarPaciente(cpf);
     	 
          Page<ConsultaDTO> consultasDTO = consultas.map(consulta -> {
-         	PacienteDTO pacienteDTO = buscarPaciente(cpf);
-         	MedicoDTO medicoDTO = new MedicoDTO(consulta.getMedico().getNome(),consulta.getMedico().getEmail(), consulta.getMedico().getCrm(),consulta.getMedico().getEspecialidade()); 
+         	MedicoDTO medicoDTO = buscarMedico(consulta.getMedicoCRM());
             ConsultaDTO consultaDTO = new ConsultaDTO(pacienteDTO,medicoDTO, consulta.getDataHora());
          
              return consultaDTO;
@@ -169,10 +164,10 @@ public class ConsultaService {
     
     public Page<ConsultaDTO> listarConsultasDTOPorCrmMedico(String crm, Pageable pageable){
         Page<Consulta> consultas = consultaRepository.findByMedicoCrm(crm, pageable);
-
+        MedicoDTO medicoDTO = buscarMedico(crm); 
+        
         Page<ConsultaDTO> consultasDTO = consultas.map(consulta -> {
-        	PacienteDTO pacienteDTO = new PacienteDTO(consulta.getPaciente().getNome(),consulta.getPaciente().getEmail(), consulta.getPaciente().getCpf());
-        	MedicoDTO medicoDTO = new MedicoDTO(consulta.getMedico().getNome(),consulta.getMedico().getEmail(), consulta.getMedico().getCrm(),consulta.getMedico().getEspecialidade()); 
+        	PacienteDTO pacienteDTO = buscarPaciente(consulta.getPacienteCPF());
             ConsultaDTO consultaDTO = new ConsultaDTO(pacienteDTO,medicoDTO, consulta.getDataHora());
         
             return consultaDTO;
@@ -218,18 +213,19 @@ public class ConsultaService {
         }
     }
     
-    public Boolean verificaSePacienteAtivo(String cpf) {
+    
+    public MedicoDTO buscarMedico(String crm) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(VERIFICA_SE_PACIENTE_ATIVO + cpf))
-                    .header("Content-Type", "application/json")
+                    .uri(URI.create(BUSCAR_MEDICO_URL + crm))
                     .GET()
                     .build();
 
             HttpResponse<String> httpResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (httpResponse.statusCode() == 200) {
-                return new ObjectMapper().readValue(httpResponse.body(), Boolean.class);
+            	System.out.println(new ObjectMapper().readValue(httpResponse.body(), MedicoDTO.class));
+                return new ObjectMapper().readValue(httpResponse.body(), MedicoDTO.class);
             } else {
                 System.out.println("Erro na solicitação: " + httpResponse.statusCode());
                 return null;
@@ -240,16 +236,63 @@ public class ConsultaService {
         }
     }
     
+    public Boolean verificaSePacienteAtivo(String cpf) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(VERIFICA_SE_PACIENTE_ATIVO + cpf))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> httpResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (httpResponse.statusCode() == 200) {
+                return new ObjectMapper().readValue(httpResponse.body(), Boolean.class);
+            } else {
+                System.out.println("Erro na solicitação: " + httpResponse.statusCode());
+                return Boolean.FALSE;
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public Boolean verificaSeMedicoAtivo(String crm) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(VERIFICA_SE_MEDICO_ATIVO + crm))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> httpResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (httpResponse.statusCode() == 200) {
+                return new ObjectMapper().readValue(httpResponse.body(), Boolean.class);
+            } else {
+                System.out.println("Erro na solicitação: " + httpResponse.statusCode());
+                return Boolean.FALSE;
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     private void sendEmailToPaciente(String pacienteCPF, Consulta consulta, String medicoCRM) throws IOException, InterruptedException {
         PacienteDTO pacienteDTO = buscarPaciente(pacienteCPF);
-    	EmailDTO emailForPaciente = new EmailDTO("Hospital", "costa.italo.ti@gmail.com", pacienteDTO.getEmail(), "Consulta marcada",
+        MedicoDTO medico = buscarMedico(medicoCRM);
+        
+    	EmailDTO emailForPaciente = new EmailDTO("Hospital", HOSPITAL_EMAIL, pacienteDTO.getEmail(), "Consulta marcada",
                 "Olá " + pacienteDTO.getNome() + " Confirmamos que sua consulta está marcada para: " + consulta.getDataHora() + " com o médico " + medico.getNome());
 
         sendEmail(emailForPaciente);
     }
 
     private void sendEmailToMedico(String medicoCRM, Consulta consulta, String pacienteCPF) throws IOException, InterruptedException {
-        EmailDTO emailForMedico = new EmailDTO("Hospital", "costa.italo.ti@gmail.com", "veronbladw@gmail.com", "Consulta marcada",
+        MedicoDTO medico = buscarMedico(medicoCRM);
+        PacienteDTO paciente = buscarPaciente(pacienteCPF);
+        
+    	EmailDTO emailForMedico = new EmailDTO("Hospital", HOSPITAL_EMAIL , paciente.getEmail(), "Consulta marcada",
                 "Olá " + medico.getNome() + " Confirmamos que sua consulta está marcada para: " + consulta.getDataHora() + " com o paciente: " + paciente.getNome());
 
         System.out.println(emailForMedico);
@@ -261,5 +304,23 @@ public class ConsultaService {
         System.out.println(gson.toJson(email));
         return gson.toJson(email);
     }
+    
+  public String encontrarMedicoDisponivel(LocalDateTime dataHora) {
+	try {
+	      List<String> crmMedicosDisponiveis = consultaRepository.findCrmMedicosDisponiveis(dataHora);
+
+	      if (crmMedicosDisponiveis.size() > 0) {
+	          Random random = new Random();
+	          int index = random.nextInt(crmMedicosDisponiveis.size());
+	          String medicoCRM = crmMedicosDisponiveis.get(index);
+	          
+	          return medicoCRM;
+	      }
+	} catch (Exception e) {
+	      throw new RuntimeException("Nenhum médico disponível na data e hora especificadas.");
+	}
+	return null;
+
+  }
 
 }

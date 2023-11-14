@@ -11,6 +11,8 @@ public class PacienteDTO {
 		this.email = email;
 		this.cpf = cpf;
 	}
+	
+	public PacienteDTO() {}
 
 	public String getNome() {
 		return nome;

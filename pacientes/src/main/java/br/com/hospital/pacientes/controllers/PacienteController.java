@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,9 @@ public class PacienteController {
     public ResponseEntity<?> cadastrarPaciente(@RequestBody PacienteCreateDTO pacienteCreateDTO) {
         try {
             Paciente novoPaciente = pacienteService.cadastrarPaciente(pacienteCreateDTO);
-            return ResponseEntity.ok(novoPaciente);
+            System.out.println(novoPaciente);
+           
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -53,13 +56,19 @@ public class PacienteController {
 
     @GetMapping("/buscar/{cpf}")
     public ResponseEntity<Paciente> buscarPaciente(@PathVariable String cpf) {    
-        	Paciente paciente = pacienteService.buscarPaciente(cpf);            
-            return ResponseEntity.ok(paciente);
+        Paciente paciente = pacienteService.buscarPaciente(cpf);            
+        return ResponseEntity.ok(paciente);
     }
+
     @GetMapping("/verifica-se-ativo/{cpf}")
     public ResponseEntity<Boolean> verificaSePacienteAtivo(@PathVariable String cpf) {    
-        	Paciente paciente = pacienteService.buscarPaciente(cpf);            
+        Paciente paciente = pacienteService.buscarPaciente(cpf);
+        
+        if (paciente != null) {
             return ResponseEntity.ok(paciente.isAtivo());
+        } else {
+            return ResponseEntity.ok(Boolean.FALSE);
+        }
     }
     
     @PutMapping("/alterar/{cpf}")

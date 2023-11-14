@@ -16,6 +16,8 @@ public class EmailDTO {
 		this.subject = subject;
 		this.text = text;
 	}
+    
+	public EmailDTO() {}
 
 	public String getOwnerRef() {
 		return ownerRef;

@@ -3,35 +3,40 @@ package br.com.hospital.consultas.dtos;
 import java.time.LocalDateTime;
 
 public class ConsultaDTO {
-    private String pacienteCPF;    
-    private String medicoCRM;    
+    private PacienteDTO paciente;    
+    private MedicoDTO medico;    
     private LocalDateTime dataHora;
     
-    public ConsultaDTO(String pacienteCPF, String medicoCRM, LocalDateTime dataHora) {
+    public ConsultaDTO(PacienteDTO pacienteDTO, MedicoDTO medicoDTO, LocalDateTime dataHora) {
 		super();
-		this.pacienteCPF = pacienteCPF;
-		this.medicoCRM = medicoCRM;
+		this.paciente = pacienteDTO;
+		this.medico = medicoDTO;
 		this.dataHora = dataHora;
 	}
 	
-	public String getPacienteCPF() {
-		return pacienteCPF;
+
+	public PacienteDTO getPaciente() {
+		return paciente;
 	}
 
 
-	public void setPacienteCPF(String pacienteCPF) {
-		this.pacienteCPF = pacienteCPF;
+
+	public void setPaciente(PacienteDTO paciente) {
+		this.paciente = paciente;
 	}
 
 
-	public String getMedicoCRM() {
-		return medicoCRM;
+
+	public MedicoDTO getMedico() {
+		return medico;
 	}
 
 
-	public void setMedicoCRM(String medicoCRM) {
-		this.medicoCRM = medicoCRM;
+
+	public void setMedico(MedicoDTO medico) {
+		this.medico = medico;
 	}
+
 
 
 	public LocalDateTime getDataHora() {

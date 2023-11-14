@@ -14,6 +14,9 @@ public class MedicoDTO {
 		this.especialidade = especialidade;
 	}
 	
+	public MedicoDTO() {}
+	
+	
     public String getNome() {
 		return nome;
 	}

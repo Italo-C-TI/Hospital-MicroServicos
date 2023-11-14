@@ -5,8 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import br.com.hospital.medicos.dtos.MedicoCreateDTO;
+import br.com.hospital.medicos.dtos.MedicoDTO;
 import br.com.hospital.medicos.models.Medico;
 import br.com.hospital.medicos.repositories.MedicoRepository;
+
+import java.util.Optional;
+
 import javax.persistence.EntityNotFoundException;
 
 @Service
@@ -77,18 +81,26 @@ public class MedicoService {
         medicoRepository.save(medicoExistente);
     }
     
-//    public Medico encontrarMedicoDisponivel(LocalDateTime dataHora) {
-//
-//        List<Medico> medicosDisponiveis = medicoRepository.findMedicosDisponiveis(dataHora);
-//
-//        if (!medicosDisponiveis.isEmpty()) {
-//            Random random = new Random();
-//            int index = random.nextInt(medicosDisponiveis.size());
-//            Medico medico = medicosDisponiveis.get(index);
-//            
-//            return medico;
-//        }
-//
-//        throw new RuntimeException("Nenhum médico disponível na data e hora especificadas.");
-//    }
+    public MedicoDTO buscarMedico(String crm) {
+        Optional<Medico> medicoOptional = medicoRepository.findByCrm(crm);
+        if (!medicoOptional.isPresent()) {
+            throw new IllegalArgumentException("Medico não encontrado.");
+        }
+
+        Medico medico = medicoOptional.get();
+        MedicoDTO medicoDTO = new MedicoDTO(medico.getNome(), medico.getEmail(),medico.getCrm(), medico.getEspecialidade());
+        return medicoDTO;
+    }
+    
+    public Boolean verificaSeMedicoAtivo(String crm) {
+        Optional<Medico> medicoOptional = medicoRepository.findByCrm(crm);
+        if (!medicoOptional.isPresent() || !medicoOptional.get().isAtivo()) {
+            throw new IllegalArgumentException("Medico não encontrado.");
+        }
+
+        Medico medico = medicoOptional.get();
+        
+        return medico.isAtivo();
+    }
+
 }

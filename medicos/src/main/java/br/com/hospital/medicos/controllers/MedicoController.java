@@ -45,6 +45,13 @@ public class MedicoController {
 
     }
     
+    @GetMapping("/buscar/{crm}")
+    public ResponseEntity<MedicoDTO> buscarMedico(@PathVariable String crm) {    
+        	MedicoDTO medicoDTO = medicoService.buscarMedico(crm);  
+        	
+            return ResponseEntity.ok(medicoDTO);
+    }
+    
     @PostMapping("/criar")
     public ResponseEntity<?> cadastrarMedico(@RequestBody MedicoCreateDTO medico) {
     	  try {
@@ -73,6 +80,12 @@ public class MedicoController {
   	    } catch (IllegalArgumentException e) {
   	        return ResponseEntity.badRequest().body(e.getMessage());
   	    }
+    }
+    
+    @GetMapping("/verifica-se-ativo/{crm}")
+    public ResponseEntity<Boolean> verificaSeMedicoAtivo(@PathVariable String crm) {    
+        	Boolean isAtivo = medicoService.verificaSeMedicoAtivo(crm);            
+            return ResponseEntity.ok(isAtivo);
     }
 
 }

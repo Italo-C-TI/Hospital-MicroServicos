@@ -37,7 +37,6 @@ public class PacienteService {
         }
         
         Paciente paciente = new Paciente(pacienteCreateDTO);
-        paciente.setAtivo(true);
 
         return pacienteRepository.save(paciente);
     }
@@ -85,7 +84,7 @@ public class PacienteService {
     
     public Paciente buscarPaciente(String cpf) {
         Optional<Paciente> pacienteOptional = pacienteRepository.findByCpf(cpf);
-        if (!pacienteOptional.isPresent()) {
+        if (!pacienteOptional.isPresent() || !pacienteOptional.get().isAtivo()) {
             throw new IllegalArgumentException("Paciente não encontrado.");
         }
 
