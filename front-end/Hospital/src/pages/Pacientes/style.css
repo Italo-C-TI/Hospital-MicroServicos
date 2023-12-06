@@ -1,0 +1,222 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.detalhesDoCliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f8f8f9;
+  width: auto;
+}
+.containerClienteCobranca {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 30px;
+  margin-left: 3.5vw;
+  margin-top: 31px;
+  position: relative;
+  width: 87vw;
+}
+
+.containerCliente,
+.containerCobranca {
+  width: 87vw;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 30px;
+  margin-bottom: 20px;
+}
+.dadosClientePessoal,
+.dadosCobrancaPessoal {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 2vw;
+  margin-bottom: 24px;
+  width: 82vw;
+}
+
+.editarCliente {
+  color: #0e8750;
+}
+.novaCobranca {
+  color: #ffffff;
+}
+.editarCliente,
+.novaCobranca {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 252px;
+  height: 33px;
+  border: 1px solid #dedee9;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.editarCliente {
+  background: #f8f8f9;
+}
+.novaCobranca {
+  background: #da0175;
+}
+.dadosClienteTabela,
+.dadosCobrancaTabela {
+  display: flex;
+  flex-direction: column;
+}
+.dadosCobrancaTabela {
+  width: 75vw;
+}
+.dadosCobrancaTabelaLinha tr,
+.dadosClienteTabelaLinha tr {
+  display: flex;
+  width: 87vw;
+}
+
+.dadosClienteTabelaLinha {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 55px;
+  width: 40vw;
+}
+.dadosClienteTabelaLinha2 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 55px;
+  width: 78vw;
+  margin-left: 25px;
+}
+
+.th_tituloDetalhe {
+  width: 185px;
+
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 24px;
+  color: #3f3f55;
+}
+
+.th_tituloDetalhe2 {
+  width: 125px;
+}
+
+.th {
+  display: flex;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 50px;
+  text-align: left;
+  letter-spacing: 0.005em;
+  color: #3f3f55;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 185px;
+}
+
+thead.titulosDetalhe .tituloDetalhe {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  color: #3f3f55;
+}
+
+.block,
+.block2,
+.block3 {
+  display: flex;
+  flex-direction: column;
+  max-width: 180px;
+}
+
+.blockDetalhes {
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  justify-content: space-between;
+}
+
+.headerCobrancasCliente {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 50px;
+  letter-spacing: 0.005em;
+  color: #3f3f55;
+  text-align: left;
+}
+.atributoTabela {
+  display: flex;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 50px;
+  text-align: left;
+  letter-spacing: 0.005em;
+  color: #3f3f55;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 32vh;
+  padding-left: 25px;
+}
+
+.itemTabela {
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  line-height: 40px;
+  letter-spacing: 0.005em;
+  text-align: left;
+  color: #6e6e85;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 32vh;
+  padding-left: 25px;
+}
+.efeitoLinhaTabela {
+  border: 1px solid #eff0f7;
+  position: absolute;
+  width: 83vw;
+  left: -6px;
+}
+
+.pagoDetalhamento,
+.vencidoDetalhamento,
+.pendenteDetalhamento {
+  display: flex;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  border-radius: 8px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  min-width: 77px;
+  max-width: 115px;
+  height: 19px;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+.pagoDetalhamento {
+  background: #eef6f6;
+  color: #1fa7af;
+}
+.vencidoDetalhamento {
+  background: #ffefef;
+  color: #971d1d;
+}
+.pendenteDetalhamento {
+  background: #fcf6dc;
+  color: #c5a605;
+}

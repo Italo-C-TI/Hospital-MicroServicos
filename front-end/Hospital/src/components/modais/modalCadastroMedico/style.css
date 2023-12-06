@@ -1,0 +1,243 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.fundoModalCadastroCliente{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(145, 154, 150, 0.3);
+    backdrop-filter: blur(4px);
+    overflow-y: scroll;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+}
+
+.modalCadastroCliente{
+    background: #FFFFFF;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 600px;
+    min-height: 783px;
+    position: absolute;
+}
+.fechaModalCadastroCliente{
+    cursor: pointer;
+    position: absolute;
+    top:28px;
+    right: 30px;
+}
+.contemInputsModalCadastroCliente{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.contemInputsModalCadastroCliente input{
+    height: 44px;
+    background: #FFFFFF;
+    border: 1px solid #D0D5DD;
+    box-sizing: border-box;
+    border-radius: 8px;
+    height: 44px;
+}
+.cabecalhoModalCadastroCliente{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    text-align: left;
+    width: 485px;
+    margin-top: 41.5px;
+    margin-bottom: 7.6px;
+
+}
+.cabecalhoModalCadastroCliente h2{
+    color: #3F3F55;
+    font-family: 'Montserrat',sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 130%;
+    display: flex;
+    align-items: center;
+    margin-left: 22px;
+}
+.alerta{
+    font-family: 'Inter',sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #E70000;
+}
+.contemInputsModalCadastroCliente label{
+    color: #3F3F55;
+    font-family: 'Nunito',sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+.inputGrande{
+    width: 485px;
+    padding-left: 14px;
+}
+
+.contemInputsPequenos{
+    display: flex;
+}
+.contemInputPequeno{
+    display: flex;
+    flex-direction: column;
+}
+.contemInputPequeno input{
+    padding-left: 14px;
+}
+
+.contemInputPequenoUF{
+    display: flex;
+    flex-direction: column;
+}
+.contemInputPequenoUF input{
+    padding-left: 14px;
+}
+#cpfCliente,#cepCliente{
+    margin-right: 24px;
+}
+#telefoneCliente,#cpfCliente,#cepCliente,#bairroCliente{
+    width: 235px;
+}
+#cidadeCliente{
+    width: 303px;
+    margin-right: 24px;
+}
+#UFCliente{
+    width: 160px;
+}
+
+.contemCancelarAplicar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 57px;
+    margin-bottom: 40px;    
+}
+.aplicaCadastroCliente{
+    all: unset;
+    cursor: pointer;
+    background: #DA0175;
+    color: #F8F8F9;
+    border-radius: 10px;
+    font-family: 'Nunito',sans-serif;
+    font-size: 18px;
+    line-height: 25px;
+    align-items: center;
+    text-align: center;
+    width: 231.5px;
+    height: 33px;
+}
+
+.cancelaCadastroCliente{
+    all: unset;
+    cursor: pointer;
+    color: #0E8750;
+    background: #F8F8F9;
+    border: 1px solid #DEDEE9;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-family: 'Nunito',sans-serif;
+    font-size: 18px;
+    line-height: 25px;
+    align-items: center;
+    text-align: center;
+    width: 231.5px;
+    height: 33px;
+    margin-right: 23px;
+}
+
+@media(max-width:1000px) {
+    .modalCadastroCliente{
+        height: 80%;
+        width: 80%
+    }
+    span {
+        font-size: 18;
+    }
+    .contemInputsModalCadastroCliente input{
+        height: 60px;
+        width: 90%;
+        margin-bottom: 5px;
+    }
+
+    .contemInputsModalCadastroCliente{
+        width: 80%;
+        margin-left: 8%;
+    }
+    .cabecalhoModalCadastroCliente{
+        width: auto;
+        margin-top: 61.5px;
+        margin-bottom: 9.6px;
+    }
+    .cabecalhoModalCadastroCliente h2{
+        font-size: 36px;
+
+    }
+    .contemInputsModalCadastroCliente label{
+       
+        font-size: 20px;
+        line-height: 25px;
+    
+        margin-top: 10px;
+        margin-bottom: 8px;
+    }
+    .inputGrande{
+        width: 70%;
+        padding-left: 14px;
+    }
+  
+    .contemInputsPequenos{
+        width: auto;
+    }
+    .contemInputPequeno input{
+        padding-left: 14px;
+    }
+    #cpfCliente,#cepCliente{
+       margin-right: 25px;
+       width: 93%;
+    }
+    #telefoneCliente,#bairroCliente{
+        width: 103%;
+    }
+    #cidadeCliente{
+        width: 125%;
+    }
+    #UFCliente{
+        width: 78%;
+    }
+    
+    .contemCancelarAplicar{
+    margin-left: -60px;   
+    }
+    .aplicaCadastroCliente{
+        height: 53px;
+    }
+    
+    .cancelaCadastroCliente{
+        height: 53px;
+    }
+    .contemInputPequenoUF{
+        display: flex;
+        flex-direction: column;
+        margin-left: 15%;
+    }
+    .contemInputPequenoUF input{
+        padding-left: 14px;
+    }
+}

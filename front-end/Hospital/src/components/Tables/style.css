@@ -1,0 +1,154 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.tabelao {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: center;
+  background: #ffffff;
+  border-radius: 30px;
+  margin-left: 3.5vw;
+  margin-top: 31px;
+  position: relative;
+  width: 87vw;
+}
+
+.headTabelao tr {
+  display: flex;
+  width: 87vw;
+}
+.bodyTabelao tr {
+  display: flex;
+  width: 87vw;
+  height: 48px;
+  align-items: center;
+}
+
+.itemTabelao {
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  line-height: 40px;
+  letter-spacing: 0.005em;
+  text-align: left;
+  color: #6e6e85;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 32vh;
+  padding-left: 25px;
+}
+.atributoTabelao {
+  display: flex;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 50px;
+  text-align: left;
+  letter-spacing: 0.005em;
+  color: #3f3f55;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 32vh;
+  padding-left: 25px;
+}
+.atributoTabelao img {
+  padding-right: 10px;
+  margin-top: 10px;
+  max-width: 25px;
+  max-height: 25px;
+}
+.emDiaTabelao,
+.inamdiplenteTabelao,
+.pendenteTabelao {
+  display: flex;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  border-radius: 8px;
+  text-align: center;
+  justify-content: center;
+  min-width: 77px;
+  max-width: 115px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 19px;
+}
+.emDiaTabelao {
+  background: #eef6f6;
+  color: #1fa7af;
+}
+.inamdiplenteTabelao {
+  background: #ffefef;
+  padding-right: 8px;
+  padding-left: 8px;
+  color: #971d1d;
+}
+.pendenteTabelao {
+  background: #fcf6dc;
+  color: #c5a605;
+}
+
+.itemTabelao img {
+  cursor: pointer;
+}
+.efeitoLinhaTabelao {
+  border: 1px solid #eff0f7;
+  position: absolute;
+  width: 83vw;
+  left: -6px;
+}
+.contemEditaExcluiTabelao {
+  display: flex;
+}
+.editaTabelao {
+  margin-right: 25px;
+}
+.nomeclicavel {
+  cursor: pointer;
+}
+.tempVazio{
+  width: 80vw;
+  height: 73vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: auto;
+  margin-top: 5vh;
+}
+
+.tempVazio img{
+  width: 50vw;
+  min-width: 600px;
+  height: 50vh;
+}
+
+.ordenar {
+  cursor: pointer;
+}
+.contemPaginas{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: 'Nunito',sans-serif;
+  font-size: 14px;
+  line-height: 19px;
+  color: #243F80;
+  height: 40px;
+}
+.botaoPagina{
+  cursor: pointer;
+}
+.conteudoTabelaoVazio{
+  background-image:url('../../assets/vazio.svg') ;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 55vh;
+  margin-bottom: 7vh;
+  
+}

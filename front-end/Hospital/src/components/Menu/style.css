@@ -1,0 +1,41 @@
+.menuLateral{
+  background: #F0F0F5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 108px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.contemOpcaoMenu{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+
+}
+
+.linhaVertical{
+  position: absolute;
+  top: 0px;
+  right: 0;
+}
+
+.contemOpcaoMenu .opcaoMenu{
+  cursor: pointer;
+  width: 48px;
+  height: 74px;
+  margin-bottom: 81.5px;
+}
+
+#menuMedicos{
+  width: 68px;
+  height: 74px;
+} 
+
+.esconde{
+  display: none;
+}

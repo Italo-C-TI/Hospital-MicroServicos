@@ -1,0 +1,1 @@
+export {ModalCadastroPaciente} from './ModalCadastroPaciente.jsx';

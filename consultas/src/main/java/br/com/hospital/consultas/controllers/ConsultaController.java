@@ -3,7 +3,6 @@ package br.com.hospital.consultas.controllers;
 import br.com.hospital.consultas.dtos.*;
 import br.com.hospital.consultas.models.Consulta;
 import br.com.hospital.consultas.services.ConsultaService;
-import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy.Definition.Undefined;
 
 import java.time.LocalDateTime;
 
