@@ -17,6 +17,7 @@
     bottom: 0;
     right: 0;
     z-index: 3;
+
 }
 
 .modalCadastroCliente{
@@ -48,6 +49,7 @@
     box-sizing: border-box;
     border-radius: 8px;
     height: 44px;
+    color: #3F3F55;
 }
 .cabecalhoModalCadastroCliente{
     display: flex;
